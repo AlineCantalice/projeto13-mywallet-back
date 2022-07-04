@@ -8,6 +8,12 @@ export async function signUp(req, res) {
 
   const passwordHash = bcrypt.hashSync(user.password, 10);
 
+  const existEmail = db.collection('users').findOne({ email: user.email });
+
+  if (existEmail) {
+    return res.status(409).send("email já cadastrado");
+  }
+
   await db.collection('users').insertOne({ ...user, password: passwordHash, confirm_password: passwordHash })
 
   res.sendStatus(201);
@@ -22,9 +28,10 @@ export async function signIn(req, res) {
   if (userDB && bcrypt.compareSync(user.password, userDB.password)) {
     const token = uuid();
 
-    await db.collection('sessions').insertOne({ token, userId: user._id });
+    await db.collection('sessions').insertOne({ token, userId: userDB._id });
 
-    res.status(200).send(token);
+    delete userDB.password;
+    res.status(200).send({ ...userDB, token });
   } else {
     res.sendStatus(401);
   }
