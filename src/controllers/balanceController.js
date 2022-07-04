@@ -11,7 +11,7 @@ export async function getBalance(req, res) {
 
 export async function postBalance(req, res) {
     const balance = req.body;
-    const newValue = parseFloat(balance.value).toFixed(2).replace(".", ",");
+    const newValue = parseFloat(balance.value).toFixed(2);
     const session = res.locals.session;
 
     try {

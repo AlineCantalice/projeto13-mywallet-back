@@ -11,7 +11,7 @@ const app = express();
 app.use(cors(), express.json());
 
 app.use(userRouter);
-app.use(validateToken, balanceRouter);
+app.use(balanceRouter);
 
 const PORT = process.env.PORT || 5001;
 app.listen(process.env.PORT);
