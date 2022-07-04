@@ -3,7 +3,7 @@ import balanceSchema from "../schemas/balanceSchema.js";
 async function validateBalance(req, res, next) {
     const balance = req.body;
     const value = balance.value;
-    balance.value = parseFloat(value.replace(",", "."));
+    balance.value = value.replace(",", ".");
 
     const validation = balanceSchema.validate(balance);
 
